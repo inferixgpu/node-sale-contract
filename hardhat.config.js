@@ -18,6 +18,8 @@ if (!mnemonic && !privateKeys.length) {
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   networks: {
+    hardhat: {
+    },
     arbSepolia: {
       accounts: privateKeys,
       chainId: 421614,

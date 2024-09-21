@@ -23,7 +23,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
 
     mapping(address => uint256) public totalPurchased;
     string[] public codes;
-    mapping(string => bool) isCodeStored;
+    mapping(string => bool) public isCodeStored;
     mapping(string => uint256) public purchaseAmountPerCode;
 
     event Purchase(address indexed sender, uint256 purchasedAmount);
@@ -70,7 +70,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
         public view
         returns (bool)
     {
-        bytes32 leaf = keccak256(abi.encodePacked(user, allocation));
+        bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(user, allocation))));
         return MerkleProof.verify(merkleProof, InferixNodeSaleConfiguration(data.configAddress).whitelistRootHash(data.tier), leaf);
     }
 
@@ -107,7 +107,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
             }
 
             purchaseAmountPerCode[code] += totalPurchaseValue;
-            emit PurchaseWithCode(_msgSender(), purchasedAmount, code);
+            emit PurchaseWithCode(_msgSender(), amount, code);
         }
     }
 
