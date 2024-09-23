@@ -54,13 +54,13 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
     }
 
     function purchase(uint256 paymentAmount, string memory code) external onlyDuringSale {
-        require(InferixNodeSaleConfiguration(data.configAddress).whitelistRootHash(data.tier) == 0x0, 'for whitelisted only');
+        require(!data.isWhitelistSale, 'for public sale only');
 
         _purchase(paymentAmount, code);
     }
 
     function whitelistedPurchase(uint256 paymentAmount, bytes32[] calldata merkleProof, string calldata code) external onlyDuringSale {
-        require(InferixNodeSaleConfiguration(data.configAddress).whitelistRootHash(data.tier) != 0x0, 'for public sale only');
+        require(data.isWhitelistSale, 'for whitelist sale only');
         require(merkleProof.length > 0, 'invalid proofs');
         require(checkWhitelist(_msgSender(), merkleProof, paymentAmount), 'proof invalid');
         _purchase(paymentAmount, code);
