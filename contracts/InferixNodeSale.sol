@@ -82,7 +82,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
         require(bytes(code).length <= 64, 'code is too long');
         require(tierConfig.usdPrice > 0, 'sale price is zero');
         require(amount > 0, 'cannot purchase 0');
-        require(saleTokenPurchased + amount < tierConfig.totalAllocation, "excceded");
+        require(saleTokenPurchased + amount <= tierConfig.totalAllocation, "excceded");
 
         uint256 purchasedAmount = totalPurchased[msg.sender];
         require(tierConfig.capPerUser == 0 || purchasedAmount + amount <= tierConfig.capPerUser, "excceded cap per user");
