@@ -23,10 +23,19 @@ module.exports = {
     arbSepolia: {
       accounts: privateKeys,
       chainId: 421614,
-      url: "https://arb-sepolia.g.alchemy.com/v2/K5HFS2AVdOWcgEmYsnRB_OpN9WZ2oJLC",
+      url: process.env.RPC_ARBITRIUM_SEPOLIA,
+    },
+    arb: {
+      accounts: privateKeys,
+      chainId: 42161,
+      url: process.env.RPC_ARBITRIUM,
     }
   },
-
+  etherscan: {
+    apiKey: {
+      arbitrumOne: process.env.ETHERSCAN_ARB_APIKEY
+    }
+  },
   solidity: {
     version: "0.8.24",
     settings: {
