@@ -6,7 +6,7 @@ const config = require("./config");
 module.exports = buildModule("InferixNodeSale", (m) => {
     // var owner = m.getAccount(0);
 
-    const { wethAddress, configContract } = m.useModule(InferixNodeSaleConfiguration);
+    const { iusdtAddress, configContract } = m.useModule(InferixNodeSaleConfiguration);
 
     const nodeSales = [];
     for(let tierCfg of config.tiers) {
@@ -19,6 +19,6 @@ module.exports = buildModule("InferixNodeSale", (m) => {
     }
 
     nodeSales.configContract = configContract;
-    nodeSales.wethAddress = wethAddress;
+    nodeSales.iusdtAddress = iusdtAddress;
     return nodeSales;
 });

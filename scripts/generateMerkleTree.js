@@ -51,9 +51,9 @@ const NodeSaleModule = require("../ignition/modules/InferixNodeSale");
 
 async function main() {
     const nodeSaleContracts = await ignition.deploy(NodeSaleModule);
-    const { configContract, wethAddress } = nodeSaleContracts;
+    const { configContract, iusdtAddress } = nodeSaleContracts;
     delete nodeSaleContracts.configContract
-    delete nodeSaleContracts.wethAddress
+    delete nodeSaleContracts.iusdtAddress
 
     let whitelistSale = {}
 

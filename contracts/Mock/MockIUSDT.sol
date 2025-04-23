@@ -5,9 +5,9 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MockWETH is ERC20, Ownable {
+contract MockIUSDT is ERC20, Ownable {
     constructor(address initialOwner)
-        ERC20("WETH-Mock", "WETH")
+        ERC20("IUSDT-Mock", "IUSDT")
         Ownable(initialOwner)
     {
         _mint(msg.sender, 1000000000 * 10 ** decimals());
@@ -15,5 +15,9 @@ contract MockWETH is ERC20, Ownable {
 
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
+    }
+
+    function decimals() public view override returns (uint8) {
+        return 6;
     }
 }

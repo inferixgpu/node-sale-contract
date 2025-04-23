@@ -15,9 +15,9 @@ describe("NodeSale", function () {
         const [owner, beneficiary, addr1, addr2] = await ethers.getSigners();
         // console.log(owner, addr1, addr2)
         const nodeSaleContracts = await ignition.deploy(NodeSaleModule);
-        const { configContract, wethAddress } = nodeSaleContracts;
+        const { configContract, iusdtAddress } = nodeSaleContracts;
         delete nodeSaleContracts.configContract
-        delete nodeSaleContracts.wethAddress
+        delete nodeSaleContracts.iusdtAddress
 
         let publicSaleList = [];
         let whitelistSaleList = [];
@@ -33,7 +33,7 @@ describe("NodeSale", function () {
                 publicSaleList.push(nodeSaleContracts[idx])
         }
 
-        return { wethAddress, configContract, publicSaleList, whitelistSaleList, owner, beneficiary, addr1, addr2 }
+        return { iusdtAddress, configContract, publicSaleList, whitelistSaleList, owner, beneficiary, addr1, addr2 }
     }
 
     describe("Deployment", function () {
@@ -47,9 +47,9 @@ describe("NodeSale", function () {
 
     describe("Public Purchase", function () {
         it("Should purchase without code succeed", async function () {
-            const { wethAddress, configContract, publicSaleList, owner, beneficiary, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
-            await wethAddress.connect(owner).transfer(addr1, ONE);
-            await wethAddress.connect(owner).transfer(addr2, ONE);
+            const { iusdtAddress, configContract, publicSaleList, owner, beneficiary, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
+            await iusdtAddress.connect(owner).transfer(addr1, ONE);
+            await iusdtAddress.connect(owner).transfer(addr2, ONE);
 
             let saleConfig = await configContract.getSaleConfig();
             // console.log(saleConfig)
@@ -58,35 +58,35 @@ describe("NodeSale", function () {
             let tierConfig1 = await configContract.getTierConfig(false, 1);
 
             let price = tierConfig1[0] / saleConfig[2];
-            await wethAddress.connect(addr1).approve(publicSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
+            await iusdtAddress.connect(addr1).approve(publicSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
 
             await expect(publicSaleTier1Contract.connect(addr1).purchase(1, ""))
-                // .to.changeTokenBalance(wethAddress, addr1, -price)
+                // .to.changeTokenBalance(iusdtAddress, addr1, -price)
                 .to.emit(publicSaleTier1Contract, "Purchase")
                 .withArgs(addr1, 1)
 
-            expect(await wethAddress.balanceOf(addr1)).to.equal(ONE - price);
+            expect(await iusdtAddress.balanceOf(addr1)).to.equal(ONE - price);
             expect(await publicSaleTier1Contract.totalPurchased(addr1)).to.eq(1);
-            expect(await wethAddress.balanceOf(beneficiary)).to.eq(price);
+            expect(await iusdtAddress.balanceOf(beneficiary)).to.eq(price);
 
 
             await expect(publicSaleTier1Contract.connect(addr1).purchase(2, ""))
-                // .to.changeTokenBalance(wethAddress, addr1, -price)
+                // .to.changeTokenBalance(iusdtAddress, addr1, -price)
                 .to.emit(publicSaleTier1Contract, "Purchase")
                 .withArgs(addr1, 2)
-            expect(await wethAddress.balanceOf(addr1)).to.equal(ONE - price*3n);
+            expect(await iusdtAddress.balanceOf(addr1)).to.equal(ONE - price*3n);
             expect(await publicSaleTier1Contract.totalPurchased(addr1)).to.eq(3);
-            expect(await wethAddress.balanceOf(beneficiary)).to.eq(price*3n);
+            expect(await iusdtAddress.balanceOf(beneficiary)).to.eq(price*3n);
 
             await expect(publicSaleTier1Contract.connect(addr1).purchase(3, ""))
                 .to.be.revertedWith("excceded cap per user")
         })
 
         it("Should purchase with code succeed", async function () {
-            const { wethAddress, configContract, publicSaleList, owner, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
+            const { iusdtAddress, configContract, publicSaleList, owner, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
             
-            await wethAddress.connect(owner).transfer(addr1, ONE);
-            await wethAddress.connect(owner).transfer(addr2, ONE);
+            await iusdtAddress.connect(owner).transfer(addr1, ONE);
+            await iusdtAddress.connect(owner).transfer(addr2, ONE);
 
             let saleConfig = await configContract.getSaleConfig();
             // console.log(saleConfig)
@@ -95,11 +95,11 @@ describe("NodeSale", function () {
             let tierConfig1 = await configContract.getTierConfig(false, 1);
 
             let price = tierConfig1[0] / saleConfig[2];
-            await wethAddress.connect(addr1).approve(publicSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
-            await wethAddress.connect(addr2).approve(publicSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
+            await iusdtAddress.connect(addr1).approve(publicSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
+            await iusdtAddress.connect(addr2).approve(publicSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
 
             await expect(publicSaleTier1Contract.connect(addr1).purchase(1, "code0"))
-                // .to.changeTokenBalance(wethAddress, addr1, -price)
+                // .to.changeTokenBalance(iusdtAddress, addr1, -price)
                 .to.emit(publicSaleTier1Contract, "Purchase")
                 .withArgs(addr1, 1)
                 .to.emit(publicSaleTier1Contract, "PurchaseWithCode")
@@ -114,7 +114,7 @@ describe("NodeSale", function () {
 
     describe("Whitelist Purchase", function () {
         it("Should purchase without code succeed", async function () {
-            const { wethAddress, configContract, whitelistSaleList, owner, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
+            const { iusdtAddress, configContract, whitelistSaleList, owner, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
 
             let whitelistSaleTier1Contract = whitelistSaleList[0];
             // var data = await whitelistSaleTier1Contract.data();
@@ -138,11 +138,11 @@ describe("NodeSale", function () {
             // }
             // console.log(JSON.stringify(tree.dump()))
 
-            await wethAddress.connect(owner).transfer(addr1, ONE);
-            await wethAddress.connect(owner).transfer(addr2, ONE);
+            await iusdtAddress.connect(owner).transfer(addr1, ONE);
+            await iusdtAddress.connect(owner).transfer(addr2, ONE);
 
-            await wethAddress.connect(addr1).approve(whitelistSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
-            await wethAddress.connect(addr2).approve(whitelistSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
+            await iusdtAddress.connect(addr1).approve(whitelistSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
+            await iusdtAddress.connect(addr2).approve(whitelistSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
 
             const addr1Proof = Array.from(tree.entries())
                 .filter(([i, v]) => v[0] == addr1.address.toLowerCase())

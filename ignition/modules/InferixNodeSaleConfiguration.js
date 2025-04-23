@@ -2,30 +2,25 @@ const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 const hre = require("hardhat")
 
 const config = require("./config");
-const MockETHModule = require("./MockWETH")
+const MockIUSDTModule = require("./MockIUSDT")
 
 module.exports = buildModule("InferixNodeSaleConfiguration", (m) => {
-    var owner = m.getAccount(0);
+    //var owner = m.getAccount(0);
 
-    let wethAddress = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1";
-    let beneficiaryAddress = "0xa771C01a2D1adF82bA86C305d67Fb4d2F8fE3676";
+    let iusdtAddress = "0x582eFaC6Ce908a41d3BB9EFFCfF6ee7f0C1eD413";
+    let beneficiaryAddress = "0xC93f074448eF5A8d941BEe246C89e20b7eCf67cf";
 
-    if (hre.network.name != "arb") {
-        let { weth } = m.useModule(MockETHModule);
-        wethAddress = weth;
-
-        if (hre.network.name == "hardhat") {
-            beneficiaryAddress = m.getAccount(1);
-        } else {
-            beneficiaryAddress = owner;
-        }
+    if (hre.network.name == "hardhat") {
+        let { iusdt } = m.useModule(MockIUSDTModule);
+        iusdtAddress = iusdt;
+        beneficiaryAddress = m.getAccount(1);
     }
 
     const configContract = m.contract("InferixNodeSaleConfiguration");
     m.call(configContract, "setSaleConfig", [[
         beneficiaryAddress,
 
-        wethAddress,
+        iusdtAddress,
         config.saleConfig.snapshotedRate,
 
         config.saleConfig.whitelistSaleStartTime,
@@ -46,5 +41,5 @@ module.exports = buildModule("InferixNodeSaleConfiguration", (m) => {
         ], { id: `setTierConfig_${tierCfg.tier}_${tierCfg.isWhitelistSale}`})
     }
 
-    return { wethAddress, configContract };
+    return { iusdtAddress, configContract };
 });
