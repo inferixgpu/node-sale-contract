@@ -37,7 +37,7 @@ Inferix allows users to participate in decentralized verification by purchasing 
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm install --force
    ```
 3. Create .env file:
 
