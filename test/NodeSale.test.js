@@ -8,7 +8,7 @@ const { StandardMerkleTree } = require("@openzeppelin/merkle-tree");
 
 const NodeSaleModule = require("../ignition/modules/InferixNodeSale")
 
-const ONE = ethers.parseEther("1");
+const ONE_MILLION = ethers.parseUnits("1000000", 6);
 
 describe("NodeSale", function () {
     async function deployNodeSaleFixture() {
@@ -48,8 +48,8 @@ describe("NodeSale", function () {
     describe("Public Purchase", function () {
         it("Should purchase without code succeed", async function () {
             const { iusdtAddress, configContract, publicSaleList, owner, beneficiary, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
-            await iusdtAddress.connect(owner).transfer(addr1, ONE);
-            await iusdtAddress.connect(owner).transfer(addr2, ONE);
+            await iusdtAddress.connect(owner).transfer(addr1, ONE_MILLION);
+            await iusdtAddress.connect(owner).transfer(addr2, ONE_MILLION);
 
             let saleConfig = await configContract.getSaleConfig();
             // console.log(saleConfig)
@@ -65,7 +65,7 @@ describe("NodeSale", function () {
                 .to.emit(publicSaleTier1Contract, "Purchase")
                 .withArgs(addr1, 1)
 
-            expect(await iusdtAddress.balanceOf(addr1)).to.equal(ONE - price);
+            expect(await iusdtAddress.balanceOf(addr1)).to.equal(ONE_MILLION - price);
             expect(await publicSaleTier1Contract.totalPurchased(addr1)).to.eq(1);
             expect(await iusdtAddress.balanceOf(beneficiary)).to.eq(price);
 
@@ -74,7 +74,7 @@ describe("NodeSale", function () {
                 // .to.changeTokenBalance(iusdtAddress, addr1, -price)
                 .to.emit(publicSaleTier1Contract, "Purchase")
                 .withArgs(addr1, 2)
-            expect(await iusdtAddress.balanceOf(addr1)).to.equal(ONE - price*3n);
+            expect(await iusdtAddress.balanceOf(addr1)).to.equal(ONE_MILLION - price*3n);
             expect(await publicSaleTier1Contract.totalPurchased(addr1)).to.eq(3);
             expect(await iusdtAddress.balanceOf(beneficiary)).to.eq(price*3n);
 
@@ -85,8 +85,8 @@ describe("NodeSale", function () {
         it("Should purchase with code succeed", async function () {
             const { iusdtAddress, configContract, publicSaleList, owner, addr1, addr2 } = await loadFixture(deployNodeSaleFixture);
             
-            await iusdtAddress.connect(owner).transfer(addr1, ONE);
-            await iusdtAddress.connect(owner).transfer(addr2, ONE);
+            await iusdtAddress.connect(owner).transfer(addr1, ONE_MILLION);
+            await iusdtAddress.connect(owner).transfer(addr2, ONE_MILLION);
 
             let saleConfig = await configContract.getSaleConfig();
             // console.log(saleConfig)
@@ -138,8 +138,8 @@ describe("NodeSale", function () {
             // }
             // console.log(JSON.stringify(tree.dump()))
 
-            await iusdtAddress.connect(owner).transfer(addr1, ONE);
-            await iusdtAddress.connect(owner).transfer(addr2, ONE);
+            await iusdtAddress.connect(owner).transfer(addr1, ONE_MILLION);
+            await iusdtAddress.connect(owner).transfer(addr2, ONE_MILLION);
 
             await iusdtAddress.connect(addr1).approve(whitelistSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")
             await iusdtAddress.connect(addr2).approve(whitelistSaleTier1Contract.target, "0xffffffffffffffffffffffffffffffffffffffff")

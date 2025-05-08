@@ -20,6 +20,11 @@ module.exports = {
   networks: {
     hardhat: {
     },
+    sepolia: {
+      accounts: privateKeys,
+      chainId: 11155111,
+      url: "https://1rpc.io/sepolia",
+    },
     arbSepolia: {
       accounts: privateKeys,
       chainId: 421614,
