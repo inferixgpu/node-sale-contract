@@ -37,16 +37,24 @@ Inferix allows users to participate in decentralized verification by purchasing 
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm install --force
    ```
+3. Create .env file:
 
-3. Compile the contracts:
+   ```
+   PRIVATE_KEYS=<your wallet private key>
+   RPC_ARBITRIUM_SEPOLIA=https://sepolia-rollup.arbitrum.io/rpc
+   RPC_ARBITRIUM=https://arb1.arbitrum.io/rpc
+   ETHERSCAN_ARB_APIKEY=8KWKNUKA2NWKK4SWS76F54D3JUE442Y88E
+   ```
+   
+4. Compile the contracts:
 
    ```bash
    npx hardhat compile
    ```
 
-4. Run the tests:
+5. Run the tests:
 
    ```bash
    npx hardhat test
@@ -58,12 +66,31 @@ Configure the network details in `hardhat.config.js` for deployment.
 
 Deploy the contracts:
 
+*Remember to empty the `ignition/deployments` folder to avoid unwanted exceptions*
+
 ```bash
 npx hardhat ignition deploy ignition/modules/InferixNodeSale.js --network <network_name>
 ```
 
 Replace `<network_name>` with your desired network (e.g., `mainnet`, `arbitrium`).
 
+Remember to save the list of contract addresses that are shown in the console log.
+
+### Update Whitelist data
+
+To update whitelisted data:
+
+- Edit the value of `whitelistByTiers` array in scripts/generateMerkleTree.js
+  
+- Run following command to generate Merkle tree data:
+```
+npx hardhat run scripts/generateMerkleTree.js
+```
+- Upload ther tier1.json, tier2.json,...tier8.json to node sale http server
+- Save the Merkle hash of each tiers that are shown in the console log 
+   
+- Use [Getlaika](https://legacy.getlaika.app/) to send the merkle hash of each tier to the `InferixNodeSaleConfiguration#InferixNodeSaleConfiguration` contract. 
+  
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
