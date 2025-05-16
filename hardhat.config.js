@@ -25,7 +25,7 @@ module.exports = {
       chainId: 11155111,
       url: "https://1rpc.io/sepolia",
     },
-    arbSepolia: {
+    arbsep: {
       accounts: privateKeys,
       chainId: 421614,
       url: process.env.RPC_ARBITRIUM_SEPOLIA,
