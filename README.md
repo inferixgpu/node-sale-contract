@@ -89,8 +89,12 @@ npx hardhat run scripts/generateMerkleTree.js
 - Upload ther tier1.json, tier2.json,...tier8.json to node sale http server
 - Save the Merkle hash of each tiers that are shown in the console log 
    
-- Use [Getlaika](https://legacy.getlaika.app/) to send the merkle hash of each tier to the `InferixNodeSaleConfiguration#InferixNodeSaleConfiguration` contract. 
-  
+- Use a blockchain client environment like [getlaika](https://legacy.getlaika.app/) to set the merkle hash of each tier by `setWhitelistRootHash` method of `InferixNodeSaleConfiguration` contract. 
+- Use getlaika to set the sale configuration by `setSaleConfig` method of `InferixNodeSaleConfiguration` contract, wheras:
+  - `beneficiary`: wallet address that receive USDT when purchasing
+  - `whitelistSaleStartTime`, `whitelistSaleEndTime`, `publicSaleStartTime`, `publicSaleEndTime`: the effective date time of node sales
+- Use `setTierConfig` method of `InferixNodeSaleConfiguration` contract to set the Tier's configuration : `usdPrice`, `capPerUser`, `totalAllocation`  
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
