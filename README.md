@@ -1,14 +1,14 @@
 # Inferix Node Sale Contracts
 
-This repository contains the smart contracts for the sale of node verifier licenses for the [Inferix](https://inferix.io/) project. The contracts enable users to purchase verifier node licenses to support decentralized verification by running nodes on their devices.
+This repository contains the smart contracts for the sale of node licenses for the [Inferix](https://inferix.io/) project. The contracts enable users to purchase verifier node licenses to support decentralized verification by running nodes on their devices.
 
 ## Project Overview
 
-Inferix allows users to participate in decentralized verification by purchasing verifier nodes, enabling them to contribute to the network and earn rewards.
+Inferix allows users to participate in its decentralized compute network by purchasing node licenses, enabling them to contribute to the network and earn rewards.
 
 ## Features
 
-- **Node Sale Contract**: Handles the core logic for purchasing verifier node licenses.
+- **Node Sale Contract**: Handles the core logic for purchasing node licenses.
 - **Payment Support**: Supports cryptocurrency payments for node purchases.
 
 ## Repository Structure
