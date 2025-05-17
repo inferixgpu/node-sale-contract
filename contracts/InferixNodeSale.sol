@@ -62,7 +62,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
     function whitelistedPurchase(uint256 paymentAmount, bytes32[] calldata merkleProof, string calldata code) external onlyDuringSale {
         require(data.isWhitelistSale, 'for whitelist sale only');
         require(merkleProof.length > 0, 'invalid proofs');
-        require(checkWhitelist(_msgSender(), merkleProof, paymentAmount), 'proof invalid');
+        require(checkWhitelist(_msgSender(), merkleProof, paymentAmount), 'invalid whitelist proof');
         _purchase(paymentAmount, code);
     }
 
