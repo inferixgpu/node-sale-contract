@@ -1,7 +1,6 @@
 const { config: dotenvConfig } = require("dotenv");
 const { resolve } = require("path");
 
-require("@nomiclabs/hardhat-ethers");
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-ignition-ethers");
 
