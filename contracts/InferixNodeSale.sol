@@ -66,9 +66,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
         _purchase(paymentAmount, code);
     }
 
-    function checkWhitelist(address user, bytes32[] calldata merkleProof, uint256 allocation)
-        public view
-        returns (bool)
+    function checkWhitelist(address user, bytes32[] calldata merkleProof, uint256 allocation) public view returns (bool)
     {
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(user, allocation))));
         return MerkleProof.verify(merkleProof, InferixNodeSaleConfiguration(data.configAddress).whitelistRootHash(data.tier), leaf);
