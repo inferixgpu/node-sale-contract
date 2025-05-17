@@ -54,25 +54,32 @@ const whitelistByTiers = {
     ]
 }
 
-const { ignition } = require("hardhat")
-const NodeSaleModule = require("../ignition/modules/InferixNodeSale");
+
+const {ethers, network} = require("hardhat")
 
 async function main() {
-    const nodeSaleContracts = await ignition.deploy(NodeSaleModule);
-    const { configContract, iusdtAddress } = nodeSaleContracts;
-    delete nodeSaleContracts.configContract
-    delete nodeSaleContracts.iusdtAddress
+    const addresses = require("../ignition/deployments/chain-" + network.config.chainId + "/deployed_addresses.json");
+    const configContract = await ethers.getContractAt("InferixNodeSaleConfiguration", addresses["InferixNodeSaleConfiguration#InferixNodeSaleConfiguration"]);
+    const nodeSaleContracts = [];
+    for (let [name, addr] of Object.entries(addresses)) {
+        if (name.startsWith("InferixNodeSale#")) {
+            nodeSaleContracts[addr] = await ethers.getContractAt("InferixNodeSale", addr);
+        }
+    }
 
-    console.log(`ConfigContract: `, JSON.stringify(configContract));
+    console.log(`InferixNodeSaleConfiguration address: `, await configContract.getAddress());
 
     let whitelistSale = {}
 
-    for(let idx of Object.keys(nodeSaleContracts)) {
-        var node = nodeSaleContracts[idx];
-        var data = await node.data();
+    console.log(`InferixNodeSale addresses: `);
+
+    for(let addr of Object.keys(nodeSaleContracts)) {
+        var nodeContract = nodeSaleContracts[addr];
+        console.log(addr);
+        var data = await nodeContract.data();
         
         if (data[2]) {
-            whitelistSale[data[3]] = nodeSaleContracts[idx];
+            whitelistSale[data[3]] = nodeSaleContracts[addr];
         }
     }
 

@@ -1,10 +1,16 @@
 module.exports = {
     saleConfig: {
         snapshotedRate: 1,
-        whitelistSaleStartTime: "1745383086",
+        whitelistSaleStartTime: "1747503328",
         whitelistSaleEndTime: "1776893886",
-        publicSaleStartTime: "1745383086",
+        publicSaleStartTime: "1747503328",
         publicSaleEndTime: "1776893886",
+
+        beneficiary: "0xC93f074448eF5A8d941BEe246C89e20b7eCf67cf",
+        paymentToken: "0x582eFaC6Ce908a41d3BB9EFFCfF6ee7f0C1eD413", // ArbSepolia Inferix USD
+        //paymentToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7";//Ethereum USDT
+        //paymentToken: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";//Arbitrum USDT0
+        //paymentToken: "0xFd687A34262b8288bfc8F1eeBb77E93CF5e84BA6";//Sepolia Inferix USD
     },
     tiers: [
         { tier: 1, isWhitelistSale: false, usdPrice: "300000000", capPerUser: "10", allocation: "250" },
