@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {ERC721, ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
+
 // The node license NFT contract for Inferix
-contract InferixNodeLicense is ERC721, Ownable {
-    uint256 public totalSupply;
+contract InferixNodeLicense is ERC721, ERC721Enumerable, Ownable {
     uint256 public maxSupply;
     string internal baseTokenURI;
     mapping(uint256 => uint256) public idToNodeType;
@@ -17,8 +19,23 @@ contract InferixNodeLicense is ERC721, Ownable {
         ERC721('InferixNodeLicense','IFXNL') 
         Ownable(initialOwner)
     {
-        totalSupply = 0;
         maxSupply = 1000000;
+    }
+    
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
+      return super.supportsInterface(interfaceId);
+    }
+    
+    function _update(
+      address to,
+      uint256 tokenId,
+      address auth
+    ) internal override(ERC721, ERC721Enumerable) returns (address) {
+      return super._update(to, tokenId, auth);
+    }
+
+    function _increaseBalance(address account, uint128 value) internal override(ERC721, ERC721Enumerable) {
+      super._increaseBalance(account, value);
     }
 
     function initAirdropManager(address manager) external onlyOwner {
@@ -59,15 +76,23 @@ contract InferixNodeLicense is ERC721, Ownable {
         require(_to != address(0), "Invalid address");
         require(_quantity > 0, "Invalid quantity");
         require(_nodeType > 0, "Invalid node type");
-        require(totalSupply + _quantity <= maxSupply, "Max supply reached");
+        require(totalSupply() + _quantity <= maxSupply, "Max supply reached");
 
         for (uint256 i = 0; i < _quantity; i++) {
-            uint256 newTokenId = totalSupply + 10001;
-            totalSupply++;
+            uint256 newTokenId = totalSupply() + 10001;
             _safeMint(_to, newTokenId);
             idToNodeType[newTokenId] = _nodeType;
             emit NodeAirdropped(_to, newTokenId, _nodeType);
         }
+    }
+
+    function tokensOfOwner(address owner) external view returns (uint256[] memory) {
+        uint256 tokenCount = balanceOf(owner);
+        uint256[] memory tokens = new uint256[](tokenCount);
+        for (uint256 i = 0; i < tokenCount; i++) {
+            tokens[i] = tokenOfOwnerByIndex(owner, i);
+        }
+        return tokens;
     }
 
 }
