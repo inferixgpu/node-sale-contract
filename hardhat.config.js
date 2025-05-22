@@ -27,12 +27,12 @@ module.exports = {
     arbsep: {
       accounts: privateKeys,
       chainId: 421614,
-      url: process.env.RPC_ARBITRIUM_SEPOLIA,
+      url: "https://sepolia-rollup.arbitrum.io/rpc"
     },
     arb: {
       accounts: privateKeys,
       chainId: 42161,
-      url: process.env.RPC_ARBITRIUM,
+      url: "https://arb1.arbitrum.io/rpc",
     }
   },
   etherscan: {
