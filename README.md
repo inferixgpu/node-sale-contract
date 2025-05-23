@@ -42,9 +42,7 @@ Inferix allows users to participate in its decentralized compute network by purc
 3. Create .env file:
 
    ```
-   PRIVATE_KEYS=<your wallet private key>
-   RPC_ARBITRIUM_SEPOLIA=https://sepolia-rollup.arbitrum.io/rpc
-   RPC_ARBITRIUM=https://arb1.arbitrum.io/rpc
+   PRIVATE_KEYS=<your wallet 1 private key>,<your wallet 2 private key>,...
    ETHERSCAN_ARB_APIKEY=8KWKNUKA2NWKK4SWS76F54D3JUE442Y88E
    ```
    
