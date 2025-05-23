@@ -24,7 +24,8 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
     mapping(address => uint256) public totalPurchased;
     string[] public codes;
     mapping(string => bool) public isCodeStored;
-    mapping(string => uint256) public purchaseAmountPerCode;
+    mapping(string => uint256) public purchasedAmountPerCode;
+    //mapping(address => uint256) public purchasedWhitelistAmountPerAddress;
 
     event Purchase(address indexed sender, uint256 purchasedAmount);
     event PurchaseWithCode(address indexed sender, uint256 purchasedAmount, string code);
@@ -53,20 +54,24 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
         _;
     }
 
-    function purchase(uint256 paymentAmount, string memory code) external onlyDuringSale {
+    function purchase(uint256 amount, string memory code) external onlyDuringSale {
         require(!data.isWhitelistSale, 'for public sale only');
 
-        _purchase(paymentAmount, code);
+        _purchase(amount, code);
     }
 
-    function whitelistedPurchase(uint256 paymentAmount, bytes32[] calldata merkleProof, string calldata code) external onlyDuringSale {
+    function whitelistedPurchase(uint256 amount, uint256 allocation, string memory code, bytes32[] memory merkleProof) external onlyDuringSale {
         require(data.isWhitelistSale, 'for whitelist sale only');
-        require(merkleProof.length > 0, 'invalid proofs');
-        require(checkWhitelist(_msgSender(), merkleProof, paymentAmount), 'invalid whitelist proof');
-        _purchase(paymentAmount, code);
+        require(merkleProof.length > 0, 'proof is empty');
+        address senderAddress = msg.sender;
+        require(checkProof(senderAddress, merkleProof, allocation), 'invalid whitelist proof');
+        //require(purchasedWhitelistAmountPerAddress[senderAddress] + amount <= allocation, 'whitelist allocation exceeded');
+        require(totalPurchased[senderAddress] + amount <= allocation, 'whitelist allocation exceeded');
+        _purchase(amount, code);
+        //purchasedWhitelistAmountPerAddress[senderAddress] += amount;
     }
 
-    function checkWhitelist(address user, bytes32[] calldata merkleProof, uint256 allocation) public view returns (bool)
+    function checkProof(address user, bytes32[] memory merkleProof, uint256 allocation) public view returns (bool)
     {
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(user, allocation))));
         return MerkleProof.verify(merkleProof, InferixNodeSaleConfiguration(data.configAddress).whitelistRootHash(data.tier), leaf);
@@ -104,7 +109,7 @@ contract InferixNodeSale is Ownable, Pausable, ReentrancyGuard {
                 codes.push(code);
             }
 
-            purchaseAmountPerCode[code] += totalPurchaseValue;
+            purchasedAmountPerCode[code] += totalPurchaseValue;
             emit PurchaseWithCode(_msgSender(), amount, code);
         }
     }
