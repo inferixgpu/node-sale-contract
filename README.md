@@ -43,7 +43,8 @@ Inferix allows users to participate in its decentralized compute network by purc
 
    ```
    PRIVATE_KEYS=<your wallet 1 private key>,<your wallet 2 private key>,...
-   ETHERSCAN_ARB_APIKEY=8KWKNUKA2NWKK4SWS76F54D3JUE442Y88E
+   ETHERSCAN_APIKEY=<your Etherscan API key>
+   ARBISCAN_APIKEY=<your Arbiscan API key>
    ```
    
 4. Compile the contracts:
