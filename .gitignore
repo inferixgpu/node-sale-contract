@@ -5,4 +5,11 @@ artifacts
 cache
 node_modules
 
-ignition/deployments/*/
+!ignition/deployments/deployed_adresses.json
+scripts/output/*
+ignition/deployments/*/build-info/
+ignition/deployments/*/journal.jsonl
+.gitignore
+scripts/purchasing.js
+scripts/Inferix.json
+.gitignore
