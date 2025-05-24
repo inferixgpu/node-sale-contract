@@ -83,12 +83,11 @@ To update whitelisted data:
 
 - Edit the value of `whitelistByTiers` array in scripts/generateMerkleTree.js
   
-- Run following command to generate Merkle tree data:
+- Run following command to generate Merkle tree data. This also call the InferixNodeSaleConfiguration.sol smartcontract to update the Merkle tree's root hashes:
 
 ```bash
 npx hardhat run scripts/generateMerkleTree.js --network <network_name>
 ```
-This also call the InferixNodeSaleConfiguration.sol smartcontract to update the Merkle tree's root hashes
 
 - Upload ther tier1.json, tier2.json,...tier8.json to node sale http server
    
