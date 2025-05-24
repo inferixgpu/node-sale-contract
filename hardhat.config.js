@@ -33,12 +33,44 @@ module.exports = {
       accounts: privateKeys,
       chainId: 42161,
       url: "https://arb1.arbitrum.io/rpc",
+    },
+    iotex: {
+      accounts: privateKeys,
+      chainId: 4689,
+      url: "https://babel-api.mainnet.iotex.io",
+    },
+    iotextest: {
+      accounts: privateKeys,
+      chainId: 4690,
+      url: "https://babel-api.testnet.iotex.io",
     }
   },
   etherscan: {
     apiKey: {
-      arbitrumOne: process.env.ETHERSCAN_ARB_APIKEY
-    }
+      arb: process.env.ARBISCAN_APIKEY,
+      arbsep: process.env.ARBISCAN_APIKEY
+    },
+    customChains: [
+      {
+        network: "arbsep",
+        chainId: 421614,
+        urls: {
+          apiURL: "https://api-sepolia.arbiscan.io/api",
+          browserURL: "https://sepolia.arbiscan.io/"
+        }
+      },
+      {
+        network: "arb",
+        chainId: 42161,
+        urls: {
+          apiURL: "https://api.arbiscan.io/api",
+          browserURL: "https://arbiscan.io/"
+        }
+      }
+    ]
+  },
+  sourcify: {
+    enabled: true
   },
   solidity: {
     version: "0.8.24",

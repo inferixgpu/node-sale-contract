@@ -45,6 +45,7 @@ Inferix allows users to participate in its decentralized compute network by purc
    PRIVATE_KEYS=<your wallet 1 private key>,<your wallet 2 private key>,...
    ETHERSCAN_APIKEY=<your Etherscan API key>
    ARBISCAN_APIKEY=<your Arbiscan API key>
+   IOTEXSCAN_APIKEY=<your IoTeXscan API key>
    ```
    
 4. Compile the contracts:
@@ -71,7 +72,7 @@ Deploy the contracts:
 npx hardhat ignition deploy ignition/modules/InferixNodeSale.js --network <network_name>
 ```
 
-Replace `<network_name>` with your desired network (e.g., `mainnet`, `arbitrium`).
+Replace `<network_name>` with your desired network (e.g., `arb`, `arbsep`, `iotex`, `iotextest`).
 
 Remember to save the list of contract addresses that are shown in the console log.
 
@@ -82,14 +83,14 @@ To update whitelisted data:
 - Edit the value of `whitelistByTiers` array in scripts/generateMerkleTree.js
   
 - Run following command to generate Merkle tree data:
+
+```bash
+npx hardhat run scripts/generateMerkleTree.js --network <network_name>
 ```
-npx hardhat run scripts/generateMerkleTree.js
-```
+
 - Upload ther tier1.json, tier2.json,...tier8.json to node sale http server
-- Save the Merkle hash of each tiers that are shown in the console log 
    
-- Use a blockchain client environment like [getlaika](https://legacy.getlaika.app/) to set the merkle hash of each tier by `setWhitelistRootHash` method of `InferixNodeSaleConfiguration` contract. 
-- Use getlaika to set the sale configuration by `setSaleConfig` method of `InferixNodeSaleConfiguration` contract, wheras:
+- Use a blockchain client environment like [getlaika](https://legacy.getlaika.app/) to set the sale configuration by `setSaleConfig` method of `InferixNodeSaleConfiguration` contract, wheras:
   - `beneficiary`: wallet address that receive USDT when purchasing
   - `whitelistSaleStartTime`, `whitelistSaleEndTime`, `publicSaleStartTime`, `publicSaleEndTime`: the effective date time of node sales
 - Use `setTierConfig` method of `InferixNodeSaleConfiguration` contract to set the Tier's configuration : `usdPrice`, `capPerUser`, `totalAllocation`  
