@@ -1,10 +1,11 @@
 # Inferix Node Sale Contracts
 
-This repository contains the smart contracts for the sale of node licenses for the [Inferix](https://inferix.io/) project. The contracts enable users to purchase verifier node licenses to support decentralized verification by running nodes on their devices.
+This repository contains the smart contracts for the sale of node licenses for the [Inferix](https://inferix.io/) project. The contracts enable users to purchase node licenses to support decentralized GPU network by running nodes on their devices.
 
 ## Project Overview
 
 Inferix allows users to participate in its decentralized compute network by purchasing node licenses, enabling them to contribute to the network and earn rewards.
+The Verifier node sale front-end is deployed at https://verifier.inferix.io and the Worker node sale front-end is at https://worker.inferix.io 
 
 ## Features
 
@@ -37,7 +38,7 @@ Inferix allows users to participate in its decentralized compute network by purc
 2. Install dependencies:
 
    ```bash
-   npm install --force
+   npm install
    ```
 3. Create .env file:
 
@@ -87,6 +88,7 @@ To update whitelisted data:
 ```bash
 npx hardhat run scripts/generateMerkleTree.js --network <network_name>
 ```
+This also call the InferixNodeSaleConfiguration.sol smartcontract to update the Merkle tree's root hashes
 
 - Upload ther tier1.json, tier2.json,...tier8.json to node sale http server
    
