@@ -9,7 +9,7 @@ module.exports = {
         publicSaleEndTime: "1780135200",
 
         //beneficiary: "0xC93f074448eF5A8d941BEe246C89e20b7eCf67cf", //Testnet ContraAccount
-        beneficiary: "0x70753c49bc3674EE898Ab60f9206a35d3652Be74", //Mainnet ContraAccount
+        beneficiary: "0xE61780467F8d63C063F36CbA9Af6e0aDe5D705Bc", //Mainnet ContraAccount
         //paymentToken: "0x582eFaC6Ce908a41d3BB9EFFCfF6ee7f0C1eD413", // ArbSepolia Inferix USD
         //paymentToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7", //Ethereum USDT
         paymentToken: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9", //Arbitrum USDT0
