@@ -1,7 +1,7 @@
 const {ethers, network} = require("hardhat")
-const config = require("../ignition/modules/config");
+const config = network.config.chainId == 4689 ? require("../ignition/modules/config-iotx") : require("../ignition/modules/config");
 //Set to true if you only want to update the sale config and not the tiers
-const UPDATE_SALE_CONFIG_ONLY = false;
+const UPDATE_SALE_CONFIG_ONLY = true;
 //Set the tiers you want to update. If empty, all tiers will be updated
 const UPDATE_TIERS = [{tier: 8, isWhitelistSale: true}];
 
