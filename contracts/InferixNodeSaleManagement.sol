@@ -61,6 +61,20 @@ contract InferixNodeSaleManagement is Ownable, Pausable, ReentrancyGuard {
         cashbackPool = poolAddr;
     }
 
+    // Set the license contract address
+    // This contract is used to manage node licenses
+    function setLicenseContract(address licenseAddr) external onlyOwner {
+        require(licenseAddr != address(0), "Invalid address");
+        licenseContract = licenseAddr;
+    }
+
+    // Set the sale configuration contract address
+    // This contract is used to manage sale configurations and tier settings
+    function setSaleConfigurationContract(address saleConfigAddr) external onlyOwner {
+        require(saleConfigAddr != address(0), "Invalid address");
+        saleConfigurationContract = saleConfigAddr;
+    }
+
     // Mint node licenses and airdrop to the specified address
     // _to: the address to airdrop the tokens to
     // _quantity: the number of tokens to mint
