@@ -54,15 +54,13 @@ contract InferixNodeSaleManagement is Ownable, Pausable, ReentrancyGuard {
         _;
     }
     
-    function initAirdropManager(address manager) external onlyOwner {
+    function setAirdropManager(address manager) external onlyOwner {
         require(manager != address(0), "Invalid address");
-        require(airdropManager == address(0), "AirdropManager already initialized");
         airdropManager = manager;
     }
 
-    function initCashbackManager(address manager) external onlyOwner {
+    function setCashbackManager(address manager) external onlyOwner {
         require(manager != address(0), "Invalid address");
-        require(cashbackManager == address(0), "CashbackManager already initialized");
         cashbackManager = manager;
     }
 
@@ -109,7 +107,7 @@ contract InferixNodeSaleManagement is Ownable, Pausable, ReentrancyGuard {
     // Set the referrer and cashback percentage for a specific code
     // This function allows setting a referrer and cashback percentage for a specific code
     // It can be used to incentivize referrals and set cashback percentages for specific codes.
-    // referrer: the address of the referrer. This address will receive the cashback when the code is used
+    // referrer: the address of the referrer. This address will receive the referrer cashback when the code is used, see referrerCashback method 
     // code: the code for which cashback percentage is set
     // percentage: the cashback percentage to set (0-100)
     // referralPercentage: the percentage of cashback that the referrer will receive
@@ -159,6 +157,12 @@ contract InferixNodeSaleManagement is Ownable, Pausable, ReentrancyGuard {
         emit CashbackIssued(code, buyer, (nodePurchasedValue * cashbackPercentage) / 100);
     }
 
+    // Issue referral cashback to the referrer for a specific code
+    // This function allows the referrer to claim their cashback based on the total purchased value
+    // code: the code for which referral cashback is issued
+    // Only callable by the CashbackManager
+    // Throws if the code does not exist or if the referral cashback has already been issued
+    // Emits a ReferrerCashbackIssued event when the referral cashback is successfully issued
     function referrerCashback(string calldata code) external onlyCashbackManager {
         uint256 referralPercentage = codeReferrerPercentage[code];
         require(referralPercentage > 0, "Code not found or cashback not set");
